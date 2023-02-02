@@ -2,11 +2,12 @@
 /**
  * PrivateBin
  *
- * a zero-knowledge paste bin
+ * A zero-knowledge paste bin
  *
- * @link      https://github.com/PrivateBin/PrivateBin
  * @copyright 2012 Sébastien SAUVAGE (sebsauvage.net)
- * @license   https://www.opensource.org/licenses/zlib-license.php The zlib/libpng License
+ * @link      https://github.com/PrivateBin/PrivateBin
+ * @license   https://www.opensource.org/licenses/zlib-license.php
+ * The zlib/libpng License
  * @version   1.5.1
  */
 
@@ -18,74 +19,74 @@ use PDO;
 /**
  * Configuration
  *
- * parses configuration file, ensures default values present
+ * Parses configuration file, ensures default values present
  */
 class Configuration
 {
     /**
-     * parsed configuration
+     * Parsed configuration
      *
      * @var array
      */
     private $_configuration;
 
     /**
-     * default configuration
+     * Default configuration
      *
      * @var array
      */
     private static $_defaults = array(
         'main' => array(
-            'name'                     => 'CharleBin',
-            'basepath'                 => '',
-            'discussion'               => true,
-            'opendiscussion'           => false,
-            'password'                 => true,
-            'fileupload'               => false,
+            'name' => 'CharleBin',
+            'basepath' => '',
+            'discussion' => true,
+            'opendiscussion' => false,
+            'password' => true,
+            'fileupload' => false,
             'burnafterreadingselected' => false,
-            'defaultformatter'         => 'plaintext',
-            'syntaxhighlightingtheme'  => '',
-            'sizelimit'                => 10485760,
-            'template'                 => 'bootstrap',
-            'info'                     => 'More information on the <a href=\'https://privatebin.info/\'>project page</a>.',
-            'notice'                   => '',
-            'languageselection'        => false,
-            'languagedefault'          => 'fr',
-            'urlshortener'             => '',
-            'qrcode'                   => true,
-            'icon'                     => 'identicon',
-            'cspheader'                => 'default-src \'none\'; base-uri \'self\'; form-action \'none\'; manifest-src \'self\'; connect-src * blob:; script-src \'self\' \'unsafe-eval\'; style-src \'self\'; font-src \'self\'; frame-ancestors \'none\'; img-src \'self\' data: blob:; media-src blob:; object-src blob:; sandbox allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads',
-            'zerobincompatibility'     => false,
-            'httpwarning'              => true,
-            'compression'              => 'zlib',
+            'defaultformatter' => 'plaintext',
+            'syntaxhighlightingtheme' => '',
+            'sizelimit' => 10485760,
+            'template' => 'bootstrap',
+            'info' => 'More information on the <a href=\'https://privatebin.info/\'>project page</a>.',
+            'notice' => '',
+            'languageselection' => false,
+            'languagedefault' => 'fr',
+            'urlshortener' => '',
+            'qrcode' => true,
+            'icon' => 'identicon',
+            'cspheader' => 'default-src \'none\'; base-uri \'self\'; form-action \'none\'; manifest-src \'self\'; connect-src * blob:; script-src \'self\' \'unsafe-eval\'; style-src \'self\'; font-src \'self\'; frame-ancestors \'none\'; img-src \'self\' data: blob:; media-src blob:; object-src blob:; sandbox allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-downloads',
+            'zerobincompatibility' => false,
+            'httpwarning' => true,
+            'compression' => 'zlib',
         ),
         'expire' => array(
             'default' => '1month',
         ),
         'expire_options' => array(
-            '5min'   => 300,
-            '10min'  => 600,
-            '30min'  => 1800,
-            '1hour'  => 3600,
-            '1day'   => 86400,
-            '1week'  => 604800,
+            '5min' => 300,
+            '10min' => 600,
+            '30min' => 1800,
+            '1hour' => 3600,
+            '1day' => 86400,
+            '1week' => 604800,
             '1month' => 2592000,
-            '1year'  => 31536000,
-            'never'  => 0,
+            '1year' => 31536000,
+            'never' => 0,
         ),
         'formatter_options' => array(
-            'plaintext'          => 'Plain Text',
+            'plaintext' => 'Plain Text',
             'syntaxhighlighting' => 'Source Code',
-            'markdown'           => 'Markdown',
+            'markdown' => 'Markdown',
         ),
         'traffic' => array(
-            'limit'     => 10,
-            'header'    => '',
-            'exempted'  => '',
-            'creators'  => '',
+            'limit' => 10,
+            'header' => '',
+            'exempted' => '',
+            'creators' => '',
         ),
         'purge' => array(
-            'limit'     => 300,
+            'limit' => 300,
             'batchsize' => 10,
         ),
         'model' => array(
@@ -96,19 +97,19 @@ class Configuration
         ),
         'yourls' => array(
             'signature' => '',
-            'apiurl'    => '',
+            'apiurl' => '',
         ),
     );
 
     /**
-     * parse configuration file and ensure default configuration values are present
+     * Parse configuration file and ensure default configuration values are present
      *
      * @throws Exception
      */
     public function __construct()
     {
-        $basePaths  = array();
-        $config     = array();
+        $basePaths = array();
+        $config = array();
         $configPath = getenv('CONFIG_PATH');
         if ($configPath !== false && !empty($configPath)) {
             $basePaths[] = $configPath;
@@ -136,8 +137,7 @@ class Configuration
                     $this->_configuration[$section]['dir'] = PATH . $this->_configuration[$section]['dir'];
                 }
                 continue;
-            }
-            // provide different defaults for database model
+            } // provide different defaults for database model
             elseif (
                 $section == 'model_options' && in_array(
                     $this->_configuration['model']['class'],
@@ -158,8 +158,8 @@ class Configuration
                 )
             ) {
                 $values = array(
-                    'bucket'     => getenv('PRIVATEBIN_GCS_BUCKET') ? getenv('PRIVATEBIN_GCS_BUCKET') : null,
-                    'prefix'     => 'pastes',
+                    'bucket' => getenv('PRIVATEBIN_GCS_BUCKET') ? getenv('PRIVATEBIN_GCS_BUCKET') : null,
+                    'prefix' => 'pastes',
                     'uniformacl' => false,
                 );
             } elseif (
@@ -169,14 +169,14 @@ class Configuration
                 )
             ) {
                 $values = array(
-                    'region'                  => null,
-                    'version'                 => null,
-                    'endpoint'                => null,
-                    'accesskey'               => null,
-                    'secretkey'               => null,
+                    'region' => null,
+                    'version' => null,
+                    'endpoint' => null,
+                    'accesskey' => null,
+                    'secretkey' => null,
                     'use_path_style_endpoint' => null,
-                    'bucket'                  => null,
-                    'prefix'                  => '',
+                    'bucket' => null,
+                    'prefix' => '',
                 );
             }
 
@@ -190,8 +190,7 @@ class Configuration
                     $config[$section] = array_map('intval', $config[$section]);
                 }
                 $this->_configuration[$section] = $config[$section];
-            }
-            // check for missing keys and set defaults if necessary
+            } // check for missing keys and set defaults if necessary
             else {
                 foreach ($values as $key => $val) {
                     if ($key == 'dir') {
@@ -208,12 +207,12 @@ class Configuration
                             } elseif (in_array($val, array('false', 'no', 'off'))) {
                                 $result = false;
                             } else {
-                                $result = (bool) $config[$section][$key];
+                                $result = (bool)$config[$section][$key];
                             }
                         } elseif (is_int($val)) {
-                            $result = (int) $config[$section][$key];
+                            $result = (int)$config[$section][$key];
                         } elseif (is_string($val) && !empty($config[$section][$key])) {
-                            $result = (string) $config[$section][$key];
+                            $result = (string)$config[$section][$key];
                         }
                     }
                     $this->_configuration[$section][$key] = $result;
@@ -248,7 +247,7 @@ class Configuration
     }
 
     /**
-     * get configuration as array
+     * Get configuration as array
      *
      * @return array
      */
@@ -258,7 +257,7 @@ class Configuration
     }
 
     /**
-     * get default configuration as array
+     * Get default configuration as array
      *
      * @return array
      */
@@ -268,12 +267,12 @@ class Configuration
     }
 
     /**
-     * get a key from the configuration, typically the main section or all keys
+     * Get a key from the configuration, typically the main section or all keys
      *
      * @param string $key
      * @param string $section defaults to main
-     * @throws Exception
      * @return mixed
+     * @throws Exception
      */
     public function getKey($key, $section = 'main')
     {
@@ -285,11 +284,11 @@ class Configuration
     }
 
     /**
-     * get a section from the configuration, must exist
+     * Get a section from the configuration, must exist
      *
      * @param string $section
-     * @throws Exception
      * @return mixed
+     * @throws Exception
      */
     public function getSection($section)
     {
