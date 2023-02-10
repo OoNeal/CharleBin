@@ -5,7 +5,7 @@ start:
 	php -S localhost:8080
 
 test:
-	curl -s localhost:8080 | grep -q "<title>PrivateBin</title>"
+	curl -s localhost:8080 | grep -q "<title>CharleBin</title>"
 lint:
 	find . -type f -name '*.php' -exec php -l {} \;
 	./vendor/bin/phpcs --extensions=php ./lib/
