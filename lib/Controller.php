@@ -161,8 +161,8 @@ class Controller
      */
     private function _init()
     {
-        $this->_conf    = new Configuration();
-        $this->_model   = new Model($this->_conf);
+        $this->_conf = new Configuration();
+        $this->_model = new Model($this->_conf);
         $this->_request = new Request();
         $this->_urlBase = $this->_request->getRequestUri();
 
@@ -209,7 +209,7 @@ class Controller
             return;
         }
 
-        $data      = $this->_request->getData();
+        $data = $this->_request->getData();
         $isComment = array_key_exists('pasteid', $data) &&
             !empty($data['pasteid']) &&
             array_key_exists('parentid', $data) &&
@@ -247,8 +247,7 @@ class Controller
             } else {
                 $this->_return_message(1, I18n::_('Invalid data.'));
             }
-        }
-        // The user posts a standard paste.
+        } // The user posts a standard paste.
         else {
             $this->_model->purge();
             $paste = $this->_model->getPaste();
@@ -266,8 +265,8 @@ class Controller
      * Delete an existing paste
      *
      * @access private
-     * @param  string $dataid
-     * @param  string $deletetoken
+     * @param string $dataid
+     * @param string $deletetoken
      */
     private function _delete($dataid, $deletetoken)
     {
@@ -303,7 +302,7 @@ class Controller
      * Read an existing paste or comment, only allowed via a JSON API call
      *
      * @access private
-     * @param  string $dataid
+     * @param string $dataid
      */
     private function _read($dataid)
     {
@@ -318,7 +317,7 @@ class Controller
                 if (array_key_exists('salt', $data['meta'])) {
                     unset($data['meta']['salt']);
                 }
-                $this->_return_message(0, $dataid, (array) $data);
+                $this->_return_message(0, $dataid, (array)$data);
             } else {
                 $this->_return_message(1, self::GENERIC_ERROR);
             }
@@ -432,7 +431,7 @@ class Controller
             $type = '';
         }
         $content = '{}';
-        $file    = PUBLIC_PATH . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . $type . '.jsonld';
+        $file = PUBLIC_PATH . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . $type . '.jsonld';
         if (is_readable($file)) {
             $content = str_replace(
                 '?jsonld=',
@@ -467,9 +466,9 @@ class Controller
      * prepares JSON encoded status message
      *
      * @access private
-     * @param  int $status
-     * @param  string $message
-     * @param  array $other
+     * @param int $status
+     * @param string $message
+     * @param array $other
      */
     private function _return_message($status, $message, $other = array())
     {
@@ -477,7 +476,7 @@ class Controller
         if ($status) {
             $result['message'] = I18n::_($message);
         } else {
-            $result['id']  = $message;
+            $result['id'] = $message;
             $result['url'] = $this->_urlBase . '?' . $message;
         }
         $result += $other;
